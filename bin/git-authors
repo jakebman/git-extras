@@ -2,6 +2,7 @@
 
 LIST=false
 NO_EMAIL=false
+NO_MAILMAP=false
 FILE=""
 
 while [[ $# -gt 0 ]]; do
@@ -12,6 +13,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-email )
       NO_EMAIL=true
+      shift
+      ;;
+    --no-use-mailmap|--no-mailmap )
+      NO_MAILMAP=true
       shift
       ;;
     * )
@@ -34,12 +39,18 @@ fi
 #
 
 authors() {
+  local -a CONFIG_OVERRIDE
+  if $NO_MAILMAP; then
+    # choose sources which provide no mailmap configuration
+    CONFIG_OVERRIDE=(-c mailmap.file=/dev/null -c mailmap.blob=0000000:/dev/null)
+  fi
+
   if $NO_EMAIL; then
     # email will be used to uniq authors.
-    git shortlog HEAD -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++' \
+    git "${CONFIG_OVERRIDE[@]}" shortlog HEAD -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++' \
       | awk -F'<' '{gsub(/ +$/, "", $1); print $1}'
   else
-    git shortlog HEAD -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++'
+    git "${CONFIG_OVERRIDE[@]}" shortlog HEAD -sne | awk '{$1=""; sub(" ", ""); print}' | awk -F'<' '!x[$1]++' | awk -F'<' '!x[$2]++'
   fi
 }
 
