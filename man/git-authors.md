@@ -17,9 +17,17 @@ git-authors(1) -- Generate authors report
 
   Show authors.
 
+  -a, --all
+
+  Show all variants of user and email
+
   --no-email
 
   Don't show authors' email.
+
+  --no-[use-]mailmap
+
+  Don't respect the .mailmap file (this is helpful to validate that your mailmap file is working)
 
 ## EXAMPLES
 
@@ -44,6 +52,10 @@ git-authors(1) -- Generate authors report
     Jonhnny Weslley
     nickl-
     Leila Muhtasib
+
+  * Validate that your .mailmap file is working:
+
+    $ diff <(git authors -l -a --no-mailmap) <(git authors -l -a)
 
 ## AUTHOR
 
