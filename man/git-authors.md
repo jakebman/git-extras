@@ -53,7 +53,7 @@ git-authors(1) -- Generate authors report
     nickl-
     Leila Muhtasib
 
-  * Validate that your .mailmap file is working:
+  Validate that your .mailmap file is working, by comparing a non-mailmap output to one respecting mailmap settings:
 
     $ diff <(git authors -l -a --no-mailmap) <(git authors -l -a)
 
