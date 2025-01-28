@@ -13,13 +13,13 @@ git-authors(1) -- Generate authors report
 
 ## OPTIONS
 
-  -l, --list
-
-  Show authors.
-
   -a, --all
 
   Show all variants of user and email
+
+  -l, --list
+
+  Show authors.
 
   --no-email
 
